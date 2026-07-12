@@ -70,7 +70,12 @@ const T = {
   dataSrcList: '• Spotify API — 174 首歌曲的音频特征<br>• 歌词文本 — 全部歌曲的完整歌词<br>• 专辑元数据 — 16 张专辑 (2000-2022)',
   methods: '分析方法',
   methodList: '• PCA / UMAP 降维<br>• KMeans / HDBSCAN 聚类<br>• 余弦相似度 / KNN 推荐<br>• RandomForest / XGBoost / LightGBM / CatBoost 预测<br>• SHAP 模型解释',
-  footer: '基于 Spotify 数据 · 数据科学 + 可视化 · 2026',
+ footer: '基于 Spotify 数据 · 数据科学 + 可视化 · 2026',
+  popTitle: '热门度分析',
+  popDesc: `最高人气歌曲「${insights.top_song}」以 ${insights.top_pop} 分位居榜首，而最低仅 ${insights.low_pop} 分。高人气歌曲通常具有更强的节奏感和更高的能量值。`,
+  popCompare: '人气排行总览',
+  popTopFeats: '高人气歌曲特征 (≥85分)',
+  popBotFeats: '低人气歌曲特征 (≤50分)',
 }
 
 // ═══ 构建应用 ════════════════════════════════════════════════════════════
@@ -81,7 +86,7 @@ function buildApp() {
     </nav>
     <main>
       ${heroSection()}${overviewSection()}${evolutionSection()}${lyricsSection()}
-      ${clusterSection()}${explorerSection()}${recommenderSection()}${aboutSection()}
+      ${clusterSection()}${popularitySection()}${explorerSection()}${recommenderSection()}${aboutSection()}
     </main>
     <footer style="text-align:center;padding:24px 20px;color:var(--text3);font-size:.85em">
       ${T.footer}
@@ -92,6 +97,7 @@ function buildApp() {
   renderLyricChart()
   renderClusterCharts()
   renderExplorer()
+  renderPopularityCharts()
   renderRecommender()
 }
 
@@ -154,9 +160,9 @@ function evolutionSection() {
         <h2>${T.evoTitle}</h2>
         <p>${T.evoDesc}</p>
       </div>
-      <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.featureTrends}</h3>
-        <div id="evo-chart" class="chart"></div></div>
-      <div class="grid-2" style="margin-top:12px">
+      <div class="card glass accent" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.featureTrends}</h3>
+        <div id="evo-chart" class="chart-full"></div></div>
+      <div class="grid-2">
         <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.eraRadar}</h3>
           <div id="era-chart" class="chart"></div></div>
         <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.eraStats}</h3>
@@ -252,7 +258,7 @@ function renderClusterCharts() {
   const h = songs.map((s,i) => `${s.name}<br>专辑: ${s.album} (${s.year})<br>流行度: ${s.popularity}`)
   const ks = [...new Set(CL.kmeans)].sort()
   const pt = ks.map(k => ({ x:[],y:[],mode:'markers',name:`聚类 ${k}`,text:[],hoverinfo:'text',
-    marker:{size:6,color:COLORS[k%COLORS.length]} }))
+    marker:{size:8,color:COLORS[k%COLORS.length]} }))
   songs.forEach((s,i) => { const ci=ks.indexOf(CL.kmeans[i]); if(ci>=0){pt[ci].x.push(pca.coords[i][0]);pt[ci].y.push(pca.coords[i][1]);pt[ci].text.push(h[i])} })
   Plotly.newPlot('pca-chart', pt, { margin:{l:40,r:10,t:10,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
     font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'主成分 1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'主成分 2'},
@@ -260,11 +266,74 @@ function renderClusterCharts() {
 
   const hs = [...new Set(CL.hdbscan)].sort((a,b)=>a-b)
   const ut = hs.map(k => ({ x:[],y:[],mode:'markers',name:k===-1?'噪声':`聚类 ${k}`,text:[],hoverinfo:'text',
-    marker:{size:6,color:k===-1?'#666':COLORS[(k+1)%COLORS.length],symbol:k===-1?'x':'circle'} }))
+    marker:{size:8,color:k===-1?'#666':COLORS[(k+1)%COLORS.length],symbol:k===-1?'x':'circle'} }))
   songs.forEach((s,i) => { const ci=hs.indexOf(CL.hdbscan[i]); if(ci>=0){ut[ci].x.push(umap.coords[i][0]);ut[ci].y.push(umap.coords[i][1]);ut[ci].text.push(h[i])} })
   Plotly.newPlot('umap-chart', ut, { margin:{l:40,r:10,t:10,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
     font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP 1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP 2'},
     legend:{font:{size:9}} }, { responsive:true,displayModeBar:false })
+}
+
+// ═══ 热门度分析 ═══════════════════════════════════════════════════════════
+function popularitySection() {
+  const popSorted = [...songs].sort((a,b)=>b.popularity-a.popularity)
+  const top3 = popSorted.filter(s=>s.popularity>=85).slice(0,3)
+  return `<section id="popularity" class="section-anim">
+    <div class="inner">
+      <div class="narrative">
+        <h2>${T.popTitle}</h2>
+        <p>${T.popDesc}</p>
+      </div>
+      <div class="pop-hero stagger">
+        ${top3.map((s,i) => `<div class="pop-hero-card ${i===0?"top":"other"}">
+          <div class="pop-hero-rank">#${i+1}</div>
+          <div class="pop-hero-name">${s.name}</div>
+          <div class="pop-hero-album">${s.album} (${s.year})</div>
+          <div class="pop-hero-pop">${s.popularity}</div>
+          <div class="pop-hero-label">人气分</div>
+        </div>`).join("")}
+      </div>
+      <div class="card glass" style="padding:16px;margin-top:16px">
+        <h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.popCompare}</h3>
+        <div id="pop-compare-chart" class="chart-full"></div>
+      </div>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="card glass" style="padding:16px">
+          <h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.popTopFeats}</h3>
+          <div id="pop-top-radar" class="chart-sm"></div></div>
+        <div class="card glass" style="padding:16px">
+          <h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.popBotFeats}</h3>
+          <div id="pop-bot-radar" class="chart-sm"></div></div>
+      </div>
+    </div>
+  </section>`
+}
+
+function renderPopularityCharts() {
+  const popSorted = [...songs].sort((a,b)=>a.popularity-b.popularity)
+  const colors = popSorted.map(s => s.popularity>=85?"#ff6b6b":s.popularity<=50?"#5b9cf5":"rgba(74,158,255,.35)")
+  Plotly.newPlot("pop-compare-chart", [{
+    x:popSorted.map(s=>s.name), y:popSorted.map(s=>s.popularity), type:"bar",
+    marker:{color:colors}, text:popSorted.map(s=>s.popularity), textposition:"outside", textfont:{size:7},
+    hovertemplate:"%{x}<br>人气: %{y}<extra></extra>"
+  }], { margin:{l:40,r:20,t:10,b:160},paper_bgcolor:"transparent",plot_bgcolor:"transparent",
+    font:{color:"#aaa",family:"Inter,-apple-system,BlinkMacSystemFont,sans-serif",size:10},
+    xaxis:{tickangle:-60,showgrid:false,tickfont:{size:7}},yaxis:{gridcolor:"rgba(255,255,255,.04)",title:"人气值"},showlegend:false},
+    { responsive:true,displayModeBar:false })
+
+  const hiSongs = songs.filter(s=>s.popularity>=85)
+  const loSongs = songs.filter(s=>s.popularity<=50)
+  const hiAvg = {}, loAvg = {}
+  FEATS.forEach(f=>{hiAvg[f]=hiSongs.reduce((a,s)=>a+s.feats[f],0)/hiSongs.length;loAvg[f]=loSongs.reduce((a,s)=>a+s.feats[f],0)/loSongs.length})
+  Plotly.newPlot("pop-top-radar", [{
+    type:"scatterpolar",r:[...FEATS.map(f=>hiAvg[f]),hiAvg[FEATS[0]]],
+    theta:[...FEATS,FEATS[0]],fill:"toself",name:"高人气(≥85分)",line:{color:"#ff6b6b",width:2}
+  }], {polar:{bgcolor:"transparent",radialaxis:{visible:true,range:[0,1],gridcolor:"rgba(255,255,255,.04)",color:"#666"},angularaxis:{gridcolor:"rgba(255,255,255,.04)",color:"#888",tickfont:{size:9}}},
+    paper_bgcolor:"transparent",margin:{l:50,r:50,t:10,b:30},font:{color:"#aaa",family:"Inter,-apple-system,BlinkMacSystemFont,sans-serif",size:11}},{responsive:true,displayModeBar:false})
+  Plotly.newPlot("pop-bot-radar", [{
+    type:"scatterpolar",r:[...FEATS.map(f=>loAvg[f]),loAvg[FEATS[0]]],
+    theta:[...FEATS,FEATS[0]],fill:"toself",name:"低人气(≤50分)",line:{color:"#5b9cf5",width:2}
+  }], {polar:{bgcolor:"transparent",radialaxis:{visible:true,range:[0,1],gridcolor:"rgba(255,255,255,.04)",color:"#666"},angularaxis:{gridcolor:"rgba(255,255,255,.04)",color:"#888",tickfont:{size:9}}},
+    paper_bgcolor:"transparent",margin:{l:50,r:50,t:10,b:30},font:{color:"#aaa",family:"Inter,-apple-system,BlinkMacSystemFont,sans-serif",size:11}},{responsive:true,displayModeBar:false})
 }
 
 // ═══ 探索器 ═══════════════════════════════════════════════════════════════

@@ -138,6 +138,25 @@ table.song-table tr.clickable{cursor:pointer}
 
 /* ═══ MISC ══════════════════════════════════════════════════════════ */
 .glass{background:rgba(18,18,42,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);overflow:hidden}
+/* ═══ POPULARITY SECTION ═══════════════════════════════════════════ */
+.pop-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.pop-hero-card{border-radius:var(--radius);padding:20px 16px;text-align:center;border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.pop-hero-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(74,158,255,.15)}
+.pop-hero-card.top{background:linear-gradient(135deg,rgba(255,107,107,.2),rgba(255,107,107,.05));border-color:rgba(255,107,107,.3)}
+.pop-hero-card.other{background:var(--bg2)}
+.pop-hero-card .pop-hero-rank{font-size:.8em;color:var(--text3);margin-bottom:4px}
+.pop-hero-card.top .pop-hero-rank{color:#ff6b6b;font-weight:700}
+.pop-hero-card .pop-hero-name{font-size:1.2em;font-weight:700;color:var(--text);margin-bottom:4px}
+.pop-hero-card .pop-hero-album{font-size:.8em;color:var(--text3);margin-bottom:8px}
+.pop-hero-card .pop-hero-pop{font-size:2.5em;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.pop-hero-card.top .pop-hero-pop{background:linear-gradient(135deg,#ff6b6b,#ff8787);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pop-hero-card .pop-hero-label{font-size:.75em;color:var(--text3);margin-top:4px}
+@media(max-width:768px){.pop-hero{grid-template-columns:repeat(3,1fr);gap:8px}.pop-hero-card{padding:14px 10px}.pop-hero-card .pop-hero-name{font-size:1em}.pop-hero-card .pop-hero-pop{font-size:1.8em}}
+@media(max-width:480px){.pop-hero{grid-template-columns:1fr 1fr;gap:8px}}
+.chart-full{width:100%;min-height:500px;border-radius:var(--radius);overflow:hidden}
+.card.accent{border-color:rgba(74,158,255,.25);box-shadow:0 0 30px rgba(74,158,255,.06)}
+@media(max-width:768px){.chart-full{min-height:400px}}
+
 .gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
 .mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
 .mb-8{margin-bottom:8px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
