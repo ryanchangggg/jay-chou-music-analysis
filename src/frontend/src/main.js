@@ -5,6 +5,9 @@ const { songs, features:FEATS, pca, umap, clusters:CL, yearly, albums, eras, rec
 
 const COLORS = ['#5b9cf5','#845ef7','#20c997','#ff6b6b','#fcc419','#51cf66','#e64980','#9775fa','#38d9a9','#74c0fc']
 const EVO_FEATS = ['energy','danceability','acousticness','valence','speechiness','loudness']
+// 探索器显示的音频特征（中文化，只展示人类能理解的关键指标）
+const EXP_FEATS = ['energy','danceability','valence','acousticness','speechiness','loudness']
+const EXP_CN = { energy:'能量', danceability:'舞曲性', valence:'欢快度', acousticness:'声学性', speechiness:'口语性', loudness:'响度' }
 
 // ═══ 状态管理 ═══════════════════════════════════════════════════════════
 let recMethod = 'cosine'
@@ -80,7 +83,7 @@ function buildApp() {
       ${heroSection()}${overviewSection()}${evolutionSection()}${lyricsSection()}
       ${clusterSection()}${explorerSection()}${recommenderSection()}${aboutSection()}
     </main>
-    <footer style="text-align:center;padding:40px 20px;color:var(--text3);font-size:.85em">
+    <footer style="text-align:center;padding:24px 20px;color:var(--text3);font-size:.85em">
       ${T.footer}
     </footer>`
   initScrollAnim()
@@ -153,7 +156,7 @@ function evolutionSection() {
       </div>
       <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.featureTrends}</h3>
         <div id="evo-chart" class="chart"></div></div>
-      <div class="grid-2" style="margin-top:16px">
+      <div class="grid-2" style="margin-top:12px">
         <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.eraRadar}</h3>
           <div id="era-chart" class="chart"></div></div>
         <div class="card glass" style="padding:16px"><h3 style="font-size:1em;margin-bottom:12px;color:var(--text2)">${T.eraStats}</h3>
@@ -277,6 +280,7 @@ function explorerSection() {
           ${allAlbums.map(a=>`<option value="${a}">${a}</option>`).join('')}
         </select>
       </div>
+      <div id="exp-count" style="font-size:.85em;color:var(--text3);margin-bottom:8px"></div>
       <div class="table-wrap"><table class="song-table" id="exp-table">
         <thead><tr>
           <th onclick="window.sortExp(0)">#</th>
@@ -284,7 +288,7 @@ function explorerSection() {
           <th onclick="window.sortExp(2)">专辑</th>
           <th onclick="window.sortExp(3)">年份</th>
           <th onclick="window.sortExp(4)">人气</th>
-          ${FEATS.map((f,i)=>`<th onclick="window.sortExp(${i+5})">${f}</th>`).join('')}
+          ${EXP_FEATS.map((f,i)=>`<th onclick="window.sortExp(${i+5})">${EXP_CN[f]}</th>`).join('')}
         </tr></thead>
         <tbody id="exp-body"></tbody>
       </table></div>
@@ -311,8 +315,8 @@ function filterExp() {
 function sortExp(col) {
   if(expSort.col===col) expSort.dir*=-1; else {expSort.col=col;expSort.dir=1}
   expFiltered.sort((a,b) => {
-    const va = col<=1 ? songs.indexOf(a) : col===1 ? a.name : col===2 ? a.album : col===3 ? a.year : col===4 ? a.popularity : a.feats[FEATS[col-5]]
-    const vb = col<=1 ? songs.indexOf(b) : col===1 ? b.name : col===2 ? b.album : col===3 ? b.year : col===4 ? b.popularity : b.feats[FEATS[col-5]]
+    const va = col<=1 ? songs.indexOf(a) : col===1 ? a.name : col===2 ? a.album : col===3 ? a.year : col===4 ? a.popularity : a.feats[EXP_FEATS[col-5]]
+    const vb = col<=1 ? songs.indexOf(b) : col===1 ? b.name : col===2 ? b.album : col===3 ? b.year : col===4 ? b.popularity : b.feats[EXP_FEATS[col-5]]
     return typeof va==='string' ? expSort.dir*va.localeCompare(vb) : expSort.dir*(va-vb)
   })
   renderExpTable(expFiltered)
@@ -321,9 +325,11 @@ function sortExp(col) {
 function renderExpTable(flt) {
   const body = document.getElementById('exp-body')
   if(!body) return
+  const cnt = document.getElementById('exp-count')
+  if(cnt) cnt.textContent = `共 ${flt.length} 首歌曲`
   body.innerHTML = flt.map((s,i) => `<tr class="clickable" onclick="window.selectRec(${songs.indexOf(s)})">
     <td>${i+1}</td><td>${s.name}</td><td>${s.album}</td><td>${s.year}</td><td>${s.popularity}</td>
-    ${FEATS.map(f=>`<td>${(s.feats[f]*100).toFixed(1)}%</td>`).join('')}
+    ${EXP_FEATS.map(f=>`<td>${(s.feats[f]*100).toFixed(1)}%</td>`).join('')}
   </tr>`).join('')
 }
 
@@ -349,7 +355,7 @@ function recommenderSection() {
           <button class="method-btn" data-method="pca_embed" onclick="window.switchRecMethod(this,'pca_embed')">${T.recPca}</button>
         </div>
       </div>
-      <div id="rec-output" style="margin-top:16px"></div>
+      <div id="rec-output" style="margin-top:12px"></div>
     </div>
   </section>`
 }
@@ -407,16 +413,16 @@ function aboutSection() {
         <p>${T.aboutDesc}</p>
       </div>
       <div class="grid-2">
-        <div class="card glass" style="padding:20px">
-          <h3 style="font-size:1em;color:var(--accent);margin-bottom:12px">${T.dataSources}</h3>
+        <div class="card glass" style="padding:16px">
+          <h3 style="font-size:1em;color:var(--accent);margin-bottom:8px">${T.dataSources}</h3>
           <p style="color:var(--text2);font-size:.9em;line-height:1.8">${T.dataSrcList}</p>
         </div>
-        <div class="card glass" style="padding:20px">
-          <h3 style="font-size:1em;color:var(--accent);margin-bottom:12px">${T.methods}</h3>
+        <div class="card glass" style="padding:16px">
+          <h3 style="font-size:1em;color:var(--accent);margin-bottom:8px">${T.methods}</h3>
           <p style="color:var(--text2);font-size:.9em;line-height:1.8">${T.methodList}</p>
         </div>
       </div>
-      <div class="text-center" style="margin-top:32px">
+      <div class="text-center" style="margin-top:20px">
         <p style="color:var(--text3);font-size:.85em">${T.footer}</p>
       </div>
     </div>

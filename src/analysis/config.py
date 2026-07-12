@@ -6,7 +6,7 @@ are defined here as module-level constants. Import this module wherever
 you need access to data locations or analysis settings.
 
 Usage:
-    from src.python.config import RAW_DATA_DIR, AUDIO_FEATURES, RANDOM_SEED
+    from src.analysis.config import RAW_DATA_DIR, AUDIO_FEATURES, RANDOM_SEED
 """
 
 from pathlib import Path
@@ -22,7 +22,7 @@ RAW_DATA_DIR: Final[Path] = PROJECT_ROOT / "data" / "raw"
 PROCESSED_DATA_DIR: Final[Path] = PROJECT_ROOT / "data" / "processed"
 MODELS_DIR: Final[Path] = PROJECT_ROOT / "models"
 NOTEBOOKS_DIR: Final[Path] = PROJECT_ROOT / "notebooks"
-REPORTS_DIR: Final[Path] = PROJECT_ROOT / "reports"
+OUTPUTS_DIR: Final[Path] = PROJECT_ROOT / "outputs"
 
 # ---------------------------------------------------------------------------
 # 原始数据文件

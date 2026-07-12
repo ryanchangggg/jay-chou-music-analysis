@@ -16,7 +16,7 @@ import hdbscan
 import umap
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-OUT_HTML = os.path.join(ROOT, "reports/figures/dashboard.html")
+OUT_HTML = os.path.join(ROOT, "outputs/figures/dashboard.html")
 
 RS = 42
 np.random.seed(RS)
@@ -161,7 +161,7 @@ def compute_all(df, lyr):
 # ── 3. 构建 HTML ──────────────────────────────────────────────────
 def build_html(data):
     jdata = json.dumps(data, ensure_ascii=False)
-    wc_url = os.path.join(ROOT, "reports/figures/02_wordcloud.png")
+    wc_url = os.path.join(ROOT, "outputs/figures/02_wordcloud.png")
     wc_b64 = ""
     if os.path.exists(wc_url):
         import base64

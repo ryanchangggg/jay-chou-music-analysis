@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-OUTPUT_HTML  = os.path.join(PROJECT_ROOT, "reports/figures/popularity_prediction.html")
+OUTPUT_HTML  = os.path.join(PROJECT_ROOT, "outputs/figures/popularity_prediction.html")
 DATA_PATH    = os.path.join(PROJECT_ROOT, "data/raw/spotify_features.csv")
 
 TARGET   = "popularity"

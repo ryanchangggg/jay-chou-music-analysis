@@ -40,17 +40,13 @@ data/processed/
 models/*
 !models/.gitkeep
 
-# Reports - generated outputs
-reports/*
-!reports/.gitkeep
+# Outputs - generated figures, reports
+outputs/*
+!outputs/.gitkeep
 
-# Node / Frontend (separate project under src/web)
-src/web/node_modules/
-src/web/dist/
+# Frontend (separate project under src/frontend)
+src/frontend/node_modules/
+src/frontend/dist/
 
 # Logs
 *.log
-
-# Website
-website/node_modules
-website/dist

@@ -10,8 +10,8 @@ Exposed modules:
     preprocess      — Data loading, cleaning, and merging
 """
 
-from src.python import config
-from src.python import preprocess
+from src.analysis import config
+from src.analysis import preprocess
 
 __all__: list[str] = [
     "config",

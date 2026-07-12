@@ -10,7 +10,7 @@ help:
 	@echo "Targets:"
 	@echo "  install          Install Python dependencies"
 	@echo "  setup            Create virtual environment + install deps"
-	@echo "  lint             Run flake8 on src/python/"
+	@echo "  lint             Run flake8 on src/analysis/"
 	@echo "  clean            Remove __pycache__ and .ipynb_checkpoints"
 	@echo "  data             Run preprocessing pipeline"
 	@echo "  notebooks        Launch Jupyter Lab"
@@ -25,14 +25,14 @@ setup:
 	@echo "Run: source .venv/bin/activate"
 
 lint:
-	flake8 src/python/ --max-line-length=100
+	flake8 src/analysis/ --max-line-length=100
 
 clean:
 	find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name '.ipynb_checkpoints' -exec rm -rf {} + 2>/dev/null || true
 
 data:
-	python3 -m src.python.preprocess
+	python3 -m src.analysis.preprocess
 
 notebooks:
 	jupyter lab notebooks/

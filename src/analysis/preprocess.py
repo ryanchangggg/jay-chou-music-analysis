@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
-from src.python.config import (
+from src.analysis.config import (
     ALBUM_COVERS_PATH,
     DISCOGRAPHY_PATH,
     LYRICS_PATH,

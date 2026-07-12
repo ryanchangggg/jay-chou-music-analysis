@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 DATA_PATH    = os.path.join(PROJECT_ROOT, "data/raw/spotify_features.csv")
 DISC_PATH    = os.path.join(PROJECT_ROOT, "data/raw/jay_discography.csv")
 COVERS_PATH  = os.path.join(PROJECT_ROOT, "data/raw/album_covers.csv")
-OUTPUT_HTML  = os.path.join(PROJECT_ROOT, "reports/figures/song_recommender.html")
+OUTPUT_HTML  = os.path.join(PROJECT_ROOT, "outputs/figures/song_recommender.html")
 
 FEATURES = ["danceability","energy","valence","tempo",
             "acousticness","instrumentalness","speechiness",

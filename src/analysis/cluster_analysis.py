@@ -30,7 +30,7 @@ import plotly.express as px
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 DATA_PATH = os.path.join(PROJECT_ROOT, "data/raw/spotify_features.csv")
 DISC_PATH = os.path.join(PROJECT_ROOT, "data/raw/jay_discography.csv")
-OUTPUT_HTML = os.path.join(PROJECT_ROOT, "reports/figures/clustering_interactive.html")
+OUTPUT_HTML = os.path.join(PROJECT_ROOT, "outputs/figures/clustering_interactive.html")
 
 # Features to use for clustering
 FEATURE_COLS = [

@@ -4,9 +4,9 @@ Music Evolution Analysis — Jay Chou's audio features over time (2000–2026).
 Publication-quality visualizations and bilingual (Chinese/English) statistical report.
 
 Outputs:
-  - reports/figures/09_evolution_overview.png      (5-panel composite with era shading + LOESS)
-  - reports/figures/10_evolution_{feature}.png     (individual feature plots)
-  - reports/figures/11_evolution_era_radar.png      (radar comparison across 4 eras)
+  - outputs/figures/09_evolution_overview.png      (5-panel composite with era shading + LOESS)
+  - outputs/figures/10_evolution_{feature}.png     (individual feature plots)
+  - outputs/figures/11_evolution_era_radar.png      (radar comparison across 4 eras)
   - reports/music_evolution_report.md               (bilingual analysis report)
 """
 
@@ -34,8 +34,8 @@ from scipy import stats as scipy_stats
 from scipy.interpolate import make_smoothing_spline
 from scipy.stats import f_oneway, tukey_hsd
 
-from src.python.config import (
-    PROCESSED_DATA_DIR, REPORTS_DIR, RANDOM_SEED,
+from src.analysis.config import (
+    PROCESSED_DATA_DIR, OUTPUTS_DIR, RANDOM_SEED,
 )
 
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -43,7 +43,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-FIGS_DIR: Final[Path] = REPORTS_DIR / "figures"
+FIGS_DIR: Final[Path] = OUTPUTS_DIR / "figures"
 FIGS_DIR.mkdir(parents=True, exist_ok=True)
 DS_PATH: Final[Path] = PROCESSED_DATA_DIR / "jay_music_dataset.csv"
 
@@ -701,7 +701,7 @@ L("*Report generated on 2026-07-12 by the Jay Chou Music Deep Analysis pipeline.
   "报告由周杰伦音乐深度分析流水线生成。*")
 
 report_text = "\n".join(lines)
-report_path = REPORTS_DIR / "music_evolution_report.md"
+report_path = OUTPUTS_DIR / "music_evolution_report.md"
 report_path.write_text(report_text, encoding="utf-8")
 print(f"  -> {report_path}")
 

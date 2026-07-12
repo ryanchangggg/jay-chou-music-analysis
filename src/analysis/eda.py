@@ -13,9 +13,9 @@ Generates all figures for the EDA section, including:
 
 Usage:
     cd <project_root>
-    MPLCONFIGDIR=/tmp/matplotlib python3 -m src.python.eda
+    MPLCONFIGDIR=/tmp/matplotlib python3 -m src.analysis.eda
 
-All figures are saved to reports/figures/.
+All figures are saved to outputs/figures/.
 """
 
 import sys
@@ -37,11 +37,11 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from src.python.config import (
+from src.analysis.config import (
     AUDIO_FEATURES,
     NUMERIC_FEATURES,
     PROCESSED_DATA_DIR,
-    REPORTS_DIR,
+    OUTPUTS_DIR,
     RANDOM_SEED,
 )
 
@@ -51,7 +51,7 @@ from src.python.config import (
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-FIGS_DIR: Final[Path] = REPORTS_DIR / "figures"
+FIGS_DIR: Final[Path] = OUTPUTS_DIR / "figures"
 FIGS_DIR.mkdir(parents=True, exist_ok=True)
 
 DS_PATH: Final[Path] = PROCESSED_DATA_DIR / "jay_music_dataset.csv"

@@ -14,7 +14,7 @@ from sklearn.cluster import KMeans
 import hdbscan
 import umap
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 DATA_DIR = os.path.join(ROOT, "data/raw")
 OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../src"))
 RS = 42
