@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.so
+*.pkl
+*.h5
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+.jupyter/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data - keep raw, ignore regenerated processed
+data/processed/
+!data/processed/.gitkeep
+
+# Models - serialized artifacts
+models/*
+!models/.gitkeep
+
+# Reports - generated outputs
+reports/*
+!reports/.gitkeep
+
+# Node / Frontend (separate project under src/web)
+src/web/node_modules/
+src/web/dist/
+
+# Logs
+*.log

@@ -1,0 +1,30 @@
+# =============================================================================
+# Jay Chou Music Deep Analysis — Python Dependencies
+# Python >= 3.12
+# =============================================================================
+
+# --- Core data processing ---
+numpy>=1.26
+pandas>=2.2
+
+# --- Machine learning ---
+scikit-learn>=1.5
+
+# --- Chinese NLP ---
+jieba>=0.42
+opencc-python-reimplemented>=0.1
+snownlp>=0.12.3
+
+# --- Visualization (notebook) ---
+matplotlib>=3.8
+seaborn>=0.13
+
+# --- Topic modeling ---
+gensim>=4.3
+
+# --- Notebook environment ---
+jupyter>=1.0
+ipykernel>=6.29
+
+# --- Utility ---
+pyyaml>=6.0
