@@ -286,7 +286,7 @@ function renderHome() {{
         x: songs.map(s=>s.popularity), type:'histogram', marker:{{color:'#4a9eff',line:{{color:'#0a0a1a',width:1}}}},
         nbinsx:15, name:''
     }}], {{margin:{{l:40,r:10,t:10,b:30}},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-        font:{{color:'#888'}},xaxis:{{title:'Popularity',gridcolor:'#2a2a4e'}},yaxis:{{gridcolor:'#2a2a4e'}},
+        font:{{color:'#888'}},xaxis:{{title:'流行度',gridcolor:'#2a2a4e'}},yaxis:{{gridcolor:'#2a2a4e'}},
         bargap:0.1}}, {{responsive:true,displayModeBar:false}});
 
     // Albums per song count
@@ -311,7 +311,7 @@ function renderHome() {{
         marker:{{color:'#4a9eff',opacity:0.6}},
         boxmean:'sd',
     }}], {{margin:{{l:40,r:10,t:10,b:60}},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-        font:{{color:'#888'}},xaxis:{{tickangle:-30}},yaxis:{{gridcolor:'#2a2a4e',title:'Scaled Value'}}}},
+        font:{{color:'#888'}},xaxis:{{tickangle:-30}},yaxis:{{gridcolor:'#2a2a4e',title:'标准化值'}}}},
         {{responsive:true,displayModeBar:false}});
 }}
 
@@ -322,7 +322,7 @@ function renderEvolution() {{
     const page = document.getElementById('page-evolution');
     const evoFeats = ['energy','danceability','acousticness','valence','speechiness','loudness'];
     page.innerHTML = `
-    <div class="card"><h2>Feature Trends Over Years</h2><div id="evo-trend" class="plot" style="height:500px"></div></div>
+    <div class="card"><h2>Feature Trends Over Years</h2><div id="evo-trend" class="plot" style="height:520px"></div></div>
     <div class="grid-2">
       <div class="card"><h2>Era Comparison</h2><div id="era-comp" class="plot"></div></div>
       <div class="card"><h2>Era Statistics</h2><div id="era-table"></div></div>
@@ -336,7 +336,7 @@ function renderEvolution() {{
     Plotly.newPlot('evo-trend', traces, {{
         margin:{{l:50,r:10,t:10,b:40}}, paper_bgcolor:'transparent', plot_bgcolor:'transparent',
         font:{{color:'#888'}}, xaxis:{{dtick:2,gridcolor:'#2a2a4e'}},
-        yaxis:{{gridcolor:'#2a2a4e',title:'Mean Value'}},
+        yaxis:{{gridcolor:'#2a2a4e',title:'均值'}},
         legend:{{font:{{size:10}},orientation:'h',y:1.05}},
     }}, {{responsive:true,displayModeBar:false}});
 
@@ -397,7 +397,7 @@ let cluRendered = false;
 function renderCluster() {{
     if (cluRendered) return; cluRendered=true;
     const page = document.getElementById('page-cluster');
-    const hover = songs.map(s => `${{s.name}}<br>Album: ${{s.album}} (${{s.year}})<br>Pop: ${{s.popularity}}`);
+    const hover = songs.map(s => `${{s.name}}<br>Album: ${{s.album}} (${{s.year}})<br>流行度: ${{s.popularity}}`);
     page.innerHTML = `
     <div class="grid-2">
       <div class="card"><h2>PCA + KMeans (k=2)</h2><div id="clu-pca" class="plot"></div></div>
@@ -420,14 +420,14 @@ function renderCluster() {{
     }});
     Plotly.newPlot('clu-pca', pcTraces, {{
         margin:{{l:40,r:10,t:10,b:40}}, paper_bgcolor:'transparent', plot_bgcolor:'transparent',
-        font:{{color:'#888'}}, xaxis:{{gridcolor:'#2a2a4e',title:'PC1'}}, yaxis:{{gridcolor:'#2a2a4e',title:'PC2'}},
+        font:{{color:'#888'}}, xaxis:{{gridcolor:'#2a2a4e',title:'主成分 1'}}, yaxis:{{gridcolor:'#2a2a4e',title:'主成分 2'}},
         legend:{{font:{{size:9}}}},
     }}, {{responsive:true,displayModeBar:false}});
 
     // UMAP scatter (HDBSCAN)
     const hs = [...new Set(clusters.hdbscan)].sort((a,b)=>a-b);
     const umTraces = hs.map(k => {{
-        const lab = k===-1?'Noise':`Cluster ${{k}}`;
+        const lab = k===-1?'噪声':`Cluster ${{k}}`;
         return {{x:[],y:[],mode:'markers',name:lab,text:[],hoverinfo:'text',
                 marker:{{size:6,color:k===-1?'#666':COLORS[(k+1)%COLORS.length],
                         symbol:k===-1?'x':'circle'}}}};
@@ -442,7 +442,7 @@ function renderCluster() {{
     }});
     Plotly.newPlot('clu-umap', umTraces, {{
         margin:{{l:40,r:10,t:10,b:40}}, paper_bgcolor:'transparent', plot_bgcolor:'transparent',
-        font:{{color:'#888'}}, xaxis:{{gridcolor:'#2a2a4e',title:'UMAP1'}}, yaxis:{{gridcolor:'#2a2a4e',title:'UMAP2'}},
+        font:{{color:'#888'}}, xaxis:{{gridcolor:'#2a2a4e',title:'UMAP 1'}}, yaxis:{{gridcolor:'#2a2a4e',title:'UMAP 2'}},
         legend:{{font:{{size:9}}}},
     }}, {{responsive:true,displayModeBar:false}});
 
@@ -452,8 +452,8 @@ function renderCluster() {{
     const avg0 = FEATS.map(f => clust0.reduce((s,x)=>s+x.feats[f],0)/clust0.length);
     const avg1 = FEATS.map(f => clust1.reduce((s,x)=>s+x.feats[f],0)/clust1.length);
     Plotly.newPlot('clu-profile', [
-        {{type:'bar',x:FEATS,y:avg0,name:'Cluster 0',marker:{{color:COLORS[0]}}}},
-        {{type:'bar',x:FEATS,y:avg1,name:'Cluster 1',marker:{{color:COLORS[1]}}}},
+        {{type:'bar',x:FEATS,y:avg0,name:'分类 0',marker:{{color:COLORS[0]}}}},
+        {{type:'bar',x:FEATS,y:avg1,name:'分类 1',marker:{{color:COLORS[1]}}}},
     ], {{barmode:'group',margin:{{l:40,r:10,t:10,b:60}},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
         font:{{color:'#888'}},xaxis:{{tickangle:-30,gridcolor:'#2a2a4e'}},yaxis:{{gridcolor:'#2a2a4e'}},
         legend:{{font:{{size:9}}}}}}, {{responsive:true,displayModeBar:false}});

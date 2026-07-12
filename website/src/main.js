@@ -4,7 +4,7 @@ import { t, tAll, setLang, currentLang } from './i18n.js'
 const D = DATA
 const { songs, features:FEATS, pca, umap, clusters:CL, yearly, albums, eras, recommender, word_freq, title_freq, insights, meta } = D
 
-const COLORS = ['#4a9eff','#6c5ce7','#00cec9','#e17055','#fdcb6e','#00b894']
+const COLORS = ['#5b9cf5','#845ef7','#20c997','#ff6b6b','#fcc419','#51cf66','#e64980','#9775fa','#38d9a9','#74c0fc']
 const EVO_FEATS = ['energy','danceability','acousticness','valence','speechiness','loudness']
 
 // ═══ 状态管理 ═══════════════════════════════════════════════════════════
@@ -84,15 +84,15 @@ function overviewSection() {
 function renderHomeCharts() {
   const pops = songs.map(s => s.popularity)
   Plotly.newPlot('pop-chart', [{ x:pops, type:'histogram', marker:{color:'#4a9eff',line:{color:'#0a0a14',width:1}}, nbinsx:12 }],
-    { margin:{l:40,r:10,t:10,b:30},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{color:'#888'},
-      xaxis:{title:'Popularity',gridcolor:'rgba(255,255,255,.04)'},yaxis:{gridcolor:'rgba(255,255,255,.04)'},bargap:0.1 },
+    { margin:{l:40,r:10,t:10,b:30},paper_bgcolor:'transparent',plot_bgcolor:'transparent',font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},
+      xaxis:{title:'流行度',gridcolor:'rgba(255,255,255,.04)'},yaxis:{gridcolor:'rgba(255,255,255,.04)'},bargap:0.1 },
     { responsive:true,displayModeBar:false })
 
   const al = Object.entries(songs.reduce((a,s)=>(a[s.album]=(a[s.album]||0)+1,a),{})).sort((a,b)=>b[1]-a[1])
   Plotly.newPlot('album-chart', [{ x:al.map(a=>a[1]), y:al.map(a=>a[0]), type:'bar', orientation:'h',
     marker:{color:COLORS.map((_,i)=>COLORS[i%COLORS.length])}, text:al.map(a=>a[1]), textposition:'outside', textfont:{size:9} }],
     { margin:{l:120,r:30,t:10,b:30},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-      font:{color:'#888'},xaxis:{gridcolor:'rgba(255,255,255,.04)'},yaxis:{autorange:'reversed'} },
+      font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)'},yaxis:{autorange:'reversed'} },
     { responsive:true,displayModeBar:false })
 }
 
@@ -129,7 +129,7 @@ function renderEvoChart() {
     x:yearly.years, y:yearly[f], mode:'lines+markers', name:t(`evolution.${f}`),
     line:{width:2}, marker:{size:5}
   })), { margin:{l:50,r:10,t:10,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-    font:{color:'#888'},xaxis:{dtick:2,gridcolor:'rgba(255,255,255,.04)'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'Mean'},
+    font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{dtick:2,gridcolor:'rgba(255,255,255,.04)'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'均值'},
     legend:{font:{size:10},orientation:'h',y:1.05} }, { responsive:true,displayModeBar:false })
 
   const eraNames = Object.keys(eras)
@@ -142,11 +142,11 @@ function renderEvoChart() {
   Plotly.newPlot('era-chart', eraRadar, {
     polar:{bgcolor:'transparent',radialaxis:{visible:true,range:[0,1],gridcolor:'rgba(255,255,255,.04)',color:'#666'},
            angularaxis:{gridcolor:'rgba(255,255,255,.04)',color:'#888',tickfont:{size:9}}},
-    paper_bgcolor:'transparent',margin:{l:60,r:60,t:10,b:30},font:{color:'#888'},
+    paper_bgcolor:'transparent',margin:{l:60,r:60,t:10,b:30},font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},
     legend:{font:{size:8}} }, { responsive:true,displayModeBar:false })
 
   document.getElementById('era-stats').innerHTML = `<table class="song-table">
-    <tr><th>Era</th><th>Songs</th><th>Avg Pop.</th></tr>
+    <tr><th>时代</th><th>歌曲数</th><th>平均流行度</th></tr>
     ${eraNames.map(en => `<tr><td>${en}</td><td>${eras[en].count}</td><td>${eras[en].popularity}</td></tr>`).join('')}</table>`
 }
 
@@ -179,14 +179,14 @@ function renderLyricChart() {
   Plotly.newPlot('wf-chart', [{ x:wf.map(a=>a[1]), y:wf.map(a=>a[0]), type:'bar', orientation:'h',
     marker:{color:'#6c5ce7'}, text:wf.map(a=>a[1]), textposition:'outside', textfont:{size:9} }],
     { margin:{l:90,r:30,t:10,b:30},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-      font:{color:'#888'},xaxis:{gridcolor:'rgba(255,255,255,.04)'},yaxis:{autorange:'reversed'} },
+      font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)'},yaxis:{autorange:'reversed'} },
     { responsive:true,displayModeBar:false })
 
   const tf = Object.entries(title_freq).slice(0,10)
   Plotly.newPlot('tf-chart', [{ x:tf.map(a=>a[0]), y:tf.map(a=>a[1]), type:'bar',
     marker:{color:'#00cec9'}, text:tf.map(a=>a[1]), textposition:'outside', textfont:{size:9} }],
     { margin:{l:40,r:20,t:10,b:50},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-      font:{color:'#888'},xaxis:{tickangle:-30},yaxis:{gridcolor:'rgba(255,255,255,.04)'} },
+      font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{tickangle:-30},yaxis:{gridcolor:'rgba(255,255,255,.04)'} },
     { responsive:true,displayModeBar:false })
 }
 
@@ -221,15 +221,15 @@ function renderClusterCharts() {
     marker:{size:6,color:COLORS[k%COLORS.length]} }))
   songs.forEach((s,i) => { const ci=ks.indexOf(CL.kmeans[i]); if(ci>=0){pt[ci].x.push(pca.coords[i][0]);pt[ci].y.push(pca.coords[i][1]);pt[ci].text.push(h[i])} })
   Plotly.newPlot('pca-chart', pt, { margin:{l:40,r:10,t:10,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-    font:{color:'#888'},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'PC1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'PC2'},
+    font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'主成分 1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'主成分 2'},
     legend:{font:{size:9}} }, { responsive:true,displayModeBar:false })
 
   const hs = [...new Set(CL.hdbscan)].sort((a,b)=>a-b)
-  const ut = hs.map(k => ({ x:[],y:[],mode:'markers',name:k===-1?'Noise':`Cluster ${k}`,text:[],hoverinfo:'text',
+  const ut = hs.map(k => ({ x:[],y:[],mode:'markers',name:k===-1?'噪声':`Cluster ${k}`,text:[],hoverinfo:'text',
     marker:{size:6,color:k===-1?'#666':COLORS[(k+1)%COLORS.length],symbol:k===-1?'x':'circle'} }))
   songs.forEach((s,i) => { const ci=hs.indexOf(CL.hdbscan[i]); if(ci>=0){ut[ci].x.push(umap.coords[i][0]);ut[ci].y.push(umap.coords[i][1]);ut[ci].text.push(h[i])} })
   Plotly.newPlot('umap-chart', ut, { margin:{l:40,r:10,t:10,b:40},paper_bgcolor:'transparent',plot_bgcolor:'transparent',
-    font:{color:'#888'},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP2'},
+    font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},xaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP 1'},yaxis:{gridcolor:'rgba(255,255,255,.04)',title:'UMAP 2'},
     legend:{font:{size:9}} }, { responsive:true,displayModeBar:false })
 }
 
@@ -250,7 +250,7 @@ function explorerSection() {
         <thead><tr>
           <th onclick="window.sortExp(0)">#</th>
           <th onclick="window.sortExp(1)">Song</th>
-          <th onclick="window.sortExp(2)">Album</th>
+          <th onclick="window.sortExp(2)">专辑</th>
           <th onclick="window.sortExp(3)">Year</th>
           <th onclick="window.sortExp(4)">Pop</th>
           ${FEATS.map((f,i)=>`<th onclick="window.sortExp(${i+5})">${f}</th>`).join('')}
@@ -359,7 +359,7 @@ function doRec() {
      theta:[...FEATS,FEATS[0]], fill:'toself', name:top.name, line:{color:'#4a9eff',width:2}},
   ], {polar:{bgcolor:'transparent',radialaxis:{visible:true,range:[0,1],gridcolor:'rgba(255,255,255,.04)',color:'#666'},
              angularaxis:{gridcolor:'rgba(255,255,255,.04)',color:'#888',tickfont:{size:9}}},
-      paper_bgcolor:'transparent',margin:{l:60,r:60,t:10,b:30},font:{color:'#888'},
+      paper_bgcolor:'transparent',margin:{l:60,r:60,t:10,b:30},font:{color:'#aaa',family:'Inter,-apple-system,BlinkMacSystemFont,sans-serif',size:11},
       legend:{font:{size:10},orientation:'h',y:-0.15} }, {responsive:true,displayModeBar:false})
 }
 
