@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Jay Chou Music Analysis — Complete Dashboard Generator"""
+"""周杰伦音乐分析 — 完整 Dashboard 生成器"""
 import os, sys, json, warnings, re
 warnings.filterwarnings("ignore")
 os.environ["MPLCONFIGDIR"] = "/private/tmp/matplotlib_cache"
@@ -21,7 +21,7 @@ OUT_HTML = os.path.join(ROOT, "reports/figures/dashboard.html")
 RS = 42
 np.random.seed(RS)
 
-# ── 1. LOAD DATA ────────────────────────────────────────────────────
+# ── 1. 加载数据 ────────────────────────────────────────────────────
 def load():
     feats = pd.read_csv(os.path.join(ROOT, "data/raw/spotify_features.csv"))
     disc  = pd.read_csv(os.path.join(ROOT, "data/raw/jay_discography.csv"))[["song_name","album_en","album_cn","release_date"]]
@@ -39,7 +39,7 @@ def load():
         lyr = None
     return df, lyr
 
-# ── 2. COMPUTE ──────────────────────────────────────────────────────
+# ── 2. 计算分析 ──────────────────────────────────────────────────────
 FEATURES = ["danceability","energy","valence","tempo",
             "acousticness","instrumentalness","speechiness",
             "loudness","key","duration_ms","mode"]
@@ -158,7 +158,7 @@ def compute_all(df, lyr):
     return data
 
 
-# ── 3. BUILD HTML ──────────────────────────────────────────────────
+# ── 3. 构建 HTML ──────────────────────────────────────────────────
 def build_html(data):
     jdata = json.dumps(data, ensure_ascii=False)
     wc_url = os.path.join(ROOT, "reports/figures/02_wordcloud.png")
@@ -608,7 +608,7 @@ renderAbout();
     print(f"Dashboard: {os.path.getsize(OUT_HTML)/1024:.0f} KB")
 
 
-# ── MAIN ────────────────────────────────────────────────────────────
+# ── 主程序 ────────────────────────────────────────────────────────────
 def main():
     print("="*55)
     print("  Jay Chou — Dashboard Generator")

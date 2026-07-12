@@ -7,18 +7,18 @@ const { songs, features:FEATS, pca, umap, clusters:CL, yearly, albums, eras, rec
 const COLORS = ['#4a9eff','#6c5ce7','#00cec9','#e17055','#fdcb6e','#00b894']
 const EVO_FEATS = ['energy','danceability','acousticness','valence','speechiness','loudness']
 
-// ═══ STATE ══════════════════════════════════════════════════════════
+// ═══ 状态管理 ═══════════════════════════════════════════════════════════
 let recMethod = 'cosine'
 let recIdx = -1
 let expFiltered = []
 let expSort = { col:0, dir:1 }
 let lang = 'zh'
 
-// ═══ DOM HELPERS ════════════════════════════════════════════════════
+// ═══ DOM 辅助 ═══════════════════════════════════════════════════════════
 const $ = s => document.querySelector(s)
 const $$ = s => document.querySelectorAll(s)
 
-// ═══ BUILD ══════════════════════════════════════════════════════════
+// ═══ 构建应用 ════════════════════════════════════════════════════════════
 function buildApp() {
   document.getElementById('app').innerHTML = `
     <nav id="nav">
@@ -44,7 +44,7 @@ function buildApp() {
   listenLang()
 }
 
-// ═══ HERO ═══════════════════════════════════════════════════════════
+// ═══ 英雄页 ═══════════════════════════════════════════════════════════════
 function heroSection() {
   return `<section id="hero" class="section-anim">
     <div class="inner">
@@ -59,7 +59,7 @@ function heroSection() {
   </section>`
 }
 
-// ═══ OVERVIEW ═══════════════════════════════════════════════════════
+// ═══ 概览页 ═══════════════════════════════════════════════════════════════
 function overviewSection() {
   return `<section id="overview" class="section-anim">
     <div class="inner stagger">
@@ -96,7 +96,7 @@ function renderHomeCharts() {
     { responsive:true,displayModeBar:false })
 }
 
-// ═══ EVOLUTION ══════════════════════════════════════════════════════
+// ═══ 演变页 ═══════════════════════════════════════════════════════════════
 function evolutionSection() {
   const eraNames = Object.keys(eras)
   const eraRadar = eraNames.map((en,i) => ({
@@ -150,7 +150,7 @@ function renderEvoChart() {
     ${eraNames.map(en => `<tr><td>${en}</td><td>${eras[en].count}</td><td>${eras[en].popularity}</td></tr>`).join('')}</table>`
 }
 
-// ═══ LYRICS ═════════════════════════════════════════════════════════
+// ═══ 歌词页 ═══════════════════════════════════════════════════════════════
 function lyricsSection() {
   const wfArr = Object.entries(word_freq).slice(0,20)
   const tfArr = Object.entries(title_freq).slice(0,10)
@@ -190,7 +190,7 @@ function renderLyricChart() {
     { responsive:true,displayModeBar:false })
 }
 
-// ═══ CLUSTER ════════════════════════════════════════════════════════
+// ═══ 聚类页 ═══════════════════════════════════════════════════════════════
 function clusterSection() {
   const ca = CL.analysis
   const c0 = ca.c0, c1 = ca.c1
@@ -233,7 +233,7 @@ function renderClusterCharts() {
     legend:{font:{size:9}} }, { responsive:true,displayModeBar:false })
 }
 
-// ═══ EXPLORER ═══════════════════════════════════════════════════════
+// ═══ 探索器 ═══════════════════════════════════════════════════════════════
 function explorerSection() {
   const allAlbums = [...new Set(songs.map(s=>s.album))].sort()
   return `<section id="explorer" class="section-anim">
@@ -296,7 +296,7 @@ function renderExpTable(flt) {
   </tr>`).join('')
 }
 
-// ═══ RECOMMENDER ════════════════════════════════════════════════════
+// ═══ 推荐器 ═══════════════════════════════════════════════════════════════
 function recommenderSection() {
   return `<section id="recommender" class="section-anim">
     <div class="inner">
@@ -368,7 +368,7 @@ function selectRec(idx) {
   if(sel) { sel.value = idx; document.getElementById('recommender').scrollIntoView({behavior:'smooth'}); setTimeout(doRec, 500) }
 }
 
-// ═══ ABOUT ══════════════════════════════════════════════════════════
+// ═══ 关于页 ═══════════════════════════════════════════════════════════════
 function aboutSection() {
   return `<section id="about" class="section-anim">
     <div class="inner">
@@ -403,7 +403,7 @@ function aboutSection() {
   </section>`
 }
 
-// ═══ SCROLL ANIMATIONS ══════════════════════════════════════════════
+// ═══ 滚动动画 ═════════════════════════════════════════════════════════════
 function initScrollAnim() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -422,7 +422,7 @@ function initScrollAnim() {
   })
 }
 
-// ═══ I18N ═══════════════════════════════════════════════════════════
+// ═══ 多语言 ═══════════════════════════════════════════════════════════════
 function listenLang() {
   document.addEventListener('langchange', e => {
     lang = e.detail
@@ -435,7 +435,7 @@ function toggleLang() {
   setLang(lang === 'zh' ? 'en' : 'zh')
 }
 
-// ═══ INIT ═══════════════════════════════════════════════════════════
+// ═══ 初始化 ═══════════════════════════════════════════════════════════════
 window.toggleLang = toggleLang
 window.filterExp = filterExp
 window.sortExp = sortExp

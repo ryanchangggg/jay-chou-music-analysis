@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-Jay Chou — Song Recommendation System
-======================================
-Methods: Cosine Similarity / KNN / PCA Embedding
-Output: Standalone interactive HTML demo
+周杰伦 — 歌曲推荐系统
+方法: 余弦相似度 / KNN / PCA 嵌入
+输出: 独立交互式 HTML 演示
 """
 import os, sys, json, warnings
 import numpy as np
@@ -30,7 +29,7 @@ FEATURES = ["danceability","energy","valence","tempo",
 RS = 42
 np.random.seed(RS)
 
-# ── 1. Load & Prepare ───────────────────────────────────────────────
+# ── 1. 加载与预处理 ───────────────────────────────────────────────
 def load_data():
     df = pd.read_csv(DATA_PATH)
     disc = pd.read_csv(DISC_PATH)[["song_name","album_en","album_cn","release_date"]]
@@ -42,7 +41,7 @@ def load_data():
     print(f"Loaded {len(df)} songs, {len(FEATURES)} features")
     return df
 
-# ── 2. Compute Similarity Matrices ──────────────────────────────────
+# ── 2. 计算相似度矩阵 ──────────────────────────────────
 def compute_similarities(df):
     X = StandardScaler().fit_transform(df[FEATURES].values)
     n = len(df)
@@ -77,7 +76,7 @@ def compute_similarities(df):
         "PCA_Embedding": pca_cos_sim,
     }, pca
 
-# ── 3. Build HTML Template ──────────────────────────────────────────
+# ── 3. 构建 HTML 模板 ──────────────────────────────────────────
 def build_html(df, sims, pca):
     songs = []
     for _, row in df.iterrows():
@@ -389,7 +388,7 @@ document.addEventListener("DOMContentLoaded", init);
     print(f"Saved: {OUTPUT_HTML}")
     print(f"Size:  {os.path.getsize(OUTPUT_HTML)/1024:.0f} KB")
 
-# ── 4. Main ─────────────────────────────────────────────────────────
+# ── 4. 主程序 ─────────────────────────────────────────────────────────
 def main():
     print("="*55)
     print("  Jay Chou — Song Recommender")

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Jay Chou — Popularity Prediction Model Analysis
-Models: RandomForest / XGBoost / LightGBM / CatBoost
-Output: Feature Importance · SHAP · Partial Dependence · Model Evaluation
+周杰伦 — 流行度预测模型分析
+模型: RandomForest / XGBoost / LightGBM / CatBoost
+输出: 特征重要性 · SHAP · 偏依赖图 · 模型评估
 """
 import os, sys, warnings
 warnings.filterwarnings("ignore")

@@ -21,7 +21,7 @@ All figures are saved to reports/figures/.
 import sys
 from pathlib import Path
 
-# Ensure project root is on sys.path
+# 确保项目根目录在 sys.path 中
 _PROJECT_ROOT: Path = Path(__file__).resolve().parents[2]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
@@ -46,7 +46,7 @@ from src.python.config import (
 )
 
 # ---------------------------------------------------------------------------
-# Setup
+# 设置
 # ---------------------------------------------------------------------------
 
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -67,7 +67,7 @@ plt.rcParams.update({
 np.random.seed(RANDOM_SEED)
 
 # ---------------------------------------------------------------------------
-# Load data
+# 加载数据
 # ---------------------------------------------------------------------------
 
 df: pd.DataFrame = pd.read_csv(DS_PATH, encoding="utf-8-sig")
@@ -79,7 +79,7 @@ print(f"Albums: {df['album_en'].nunique()},  Years: {df['year'].min()}--{df['yea
 print(f"Figures output: {FIGS_DIR}")
 
 # ---------------------------------------------------------------------------
-# Chinese font resolution -- try several common family names
+# 中文字体解析 — 尝试多个常见字体名称
 # ---------------------------------------------------------------------------
 
 _CN_FAMILIES: list[str] = ["PingFang SC", "Heiti SC", "STHeiti", "Microsoft YaHei", "Noto Sans CJK SC"]
@@ -105,7 +105,7 @@ def _set_cn_label(ax: plt.Axes, xlabel: str = "", ylabel: str = "", title: str =
 
 
 # ===================================================================
-# 1. Missing Values
+# 1. 缺失值
 # ===================================================================
 
 print("\n[1/8] Missing values analysis ...")
@@ -137,7 +137,7 @@ plt.close(fig)
 print("  -> 01_missing_values.png")
 
 # ===================================================================
-# 2. Outlier Analysis -- Boxplots for audio features
+# 2. 异常值分析 — 音频特征的箱线图
 # ===================================================================
 
 print("[2/8] Outlier analysis (boxplots) ...")
@@ -166,7 +166,7 @@ for i, feat in enumerate(AUDIO_FEATURES):
     _set_cn_label(ax, title=_FEATURE_LABELS.get(feat, feat))
     ax.set_xticks([])
 
-# hide unused subplot if any
+# 隐藏未使用的子图
 for j in range(len(AUDIO_FEATURES), 8):
     axes_flat[j].set_visible(False)
 
@@ -178,7 +178,7 @@ plt.close(fig)
 print("  -> 02_boxplots_features.png")
 
 # ===================================================================
-# 3. Release Year Distribution
+# 3. 发行年份分布
 # ===================================================================
 
 print("[3/8] Release year distribution ...")
@@ -201,7 +201,7 @@ plt.close(fig)
 print("  -> 03_year_distribution.png")
 
 # ===================================================================
-# 4. Album Statistics
+# 4. 专辑统计
 # ===================================================================
 
 print("[4/8] Album statistics ...")
@@ -220,13 +220,13 @@ fig, ax1 = plt.subplots(figsize=(14, 6))
 
 x = range(len(album_stats))
 
-# Song count bars
+# 歌曲数量柱状图
 bars = ax1.bar(x, album_stats["song_count"], width=0.6, color="#3498DB",
                alpha=0.75, edgecolor="gray", linewidth=0.5, label="Song Count")
 ax1.set_ylabel("Song Count", fontfamily=_CN_FONT, color="#2C3E50")
 ax1.yaxis.set_major_locator(mticker.MaxNLocator(integer=True))
 
-# Avg popularity line on secondary axis
+# 平均流行度线图（次坐标轴）
 ax2 = ax1.twinx()
 ax2.plot(x, album_stats["avg_popularity"].round(1), color="#E74C3C",
          marker="o", linewidth=2, label="Avg Popularity")
@@ -241,7 +241,7 @@ ax1.set_xticks(x)
 ax1.set_xticklabels(_labels, rotation=45, ha="right", fontsize=8, fontfamily=_CN_FONT)
 _set_cn_label(ax1, title="Album Statistics -- Song Count & Average Popularity")
 
-# Combined legend
+# 合并图例
 lines1, labels1 = ax1.get_legend_handles_labels()
 lines2, labels2 = ax2.get_legend_handles_labels()
 ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left",
@@ -253,7 +253,7 @@ plt.close(fig)
 print("  -> 04_album_statistics.png")
 
 # ===================================================================
-# 5. Song Count Statistics
+# 5. 歌曲数量统计
 # ===================================================================
 
 print("[5/8] Song count statistics ...")
@@ -309,7 +309,7 @@ plt.close(fig)
 print("  -> 06_features_distribution.png")
 
 # ===================================================================
-# 7. Popularity Distribution
+# 7. 流行度分布
 # ===================================================================
 
 print("[7/8] Popularity distribution ...")
@@ -348,7 +348,7 @@ plt.close(fig)
 print("  -> 07_popularity_distribution.png")
 
 # ===================================================================
-# 8. Correlation Heatmap
+# 8. 相关热力图
 # ===================================================================
 
 print("[8/8] Correlation heatmap ...")

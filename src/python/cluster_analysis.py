@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Jay Chou Song Clustering Analysis
-Based on Spotify Audio Features
+周杰伦歌曲聚类分析
+基于 Spotify 音频特征
 
-Uses: PCA / UMAP / KMeans / HDBSCAN
-Outputs interactive Plotly HTML visualization.
+使用: PCA / UMAP / KMeans / HDBSCAN
+输出: 交互式 Plotly HTML 可视化
 """
 
 import os
@@ -26,7 +26,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
 
-# ── Config ──────────────────────────────────────────────────────────
+# ── 配置 ──────────────────────────────────────────────────────────
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 DATA_PATH = os.path.join(PROJECT_ROOT, "data/raw/spotify_features.csv")
 DISC_PATH = os.path.join(PROJECT_ROOT, "data/raw/jay_discography.csv")
@@ -42,7 +42,7 @@ FEATURE_COLS = [
 np.random.seed(42)
 
 
-# ── 1. Load Data ────────────────────────────────────────────────────
+# ── 1. 加载数据 ────────────────────────────────────────────────────
 def load_data():
     features = pd.read_csv(DATA_PATH)
     disc = pd.read_csv(DISC_PATH)[["song_name", "album_cn", "album_en", "release_date"]]
@@ -53,7 +53,7 @@ def load_data():
     return df
 
 
-# ── 2. Standardize ──────────────────────────────────────────────────
+# ── 2. 标准化 ──────────────────────────────────────────────────
 def standardize(df):
     X = df[FEATURE_COLS].values
     scaler = StandardScaler()
@@ -61,7 +61,7 @@ def standardize(df):
     return X_scaled, scaler
 
 
-# ── 3. PCA ──────────────────────────────────────────────────────────
+# ── 3. PCA 降维 ──────────────────────────────────────────────────────────
 def compute_pca(X_scaled):
     pca = PCA(n_components=2, random_state=42)
     X_pca = pca.fit_transform(X_scaled)
@@ -75,7 +75,7 @@ def compute_pca(X_scaled):
     return X_pca, pca, components_df
 
 
-# ── 4. UMAP ─────────────────────────────────────────────────────────
+# ── 4. UMAP 降维 ─────────────────────────────────────────────────────────
 def compute_umap(X_scaled):
     reducer = umap.UMAP(n_components=2, random_state=42, n_neighbors=15,
                         min_dist=0.1, metric="euclidean")
@@ -84,7 +84,7 @@ def compute_umap(X_scaled):
     return X_umap, reducer
 
 
-# ── 5. KMeans + Auto k ──────────────────────────────────────────────
+# ── 5. KMeans + 自动选 k ──────────────────────────────────────────────
 def find_optimal_k(X_scaled, k_range=range(2, 13)):
     scores = []
     models = {}
@@ -105,7 +105,7 @@ def find_optimal_k(X_scaled, k_range=range(2, 13)):
     return int(best_k), models, scores_df
 
 
-# ── 6. HDBSCAN + Auto params ────────────────────────────────────────
+# ── 6. HDBSCAN + 自动调参 ────────────────────────────────────────
 def find_optimal_hdbscan(X_scaled):
     results = []
     models = {}
@@ -155,7 +155,7 @@ def find_optimal_hdbscan(X_scaled):
     return results_df, models, dict(best_entry)
 
 
-# ── 7. Interactive Visualization ────────────────────────────────────
+# ── 7. 交互可视化 ────────────────────────────────────
 def build_interactive_chart(df, X_pca, X_umap, best_k, best_km_labels,
                             hdbscan_labels, best_hdbscan_entry,
                             pca_components):
@@ -348,7 +348,7 @@ def build_interactive_chart(df, X_pca, X_umap, best_k, best_km_labels,
     return fig
 
 
-# ── 8. Main ─────────────────────────────────────────────────────────
+# ── 8. 主程序 ─────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
     print("  Jay Chou Music — Song Clustering Analysis")
