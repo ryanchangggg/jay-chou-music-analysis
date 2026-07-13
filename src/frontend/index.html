@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>周杰伦音乐分析 · Jay Chou Music Analysis</title>
-<meta name="description" content="An interactive data exploration of Jay Chou's 174 songs across 16 albums — audio features, lyrics mining, clustering, and recommendations.">
-<meta name="keywords" content="Jay Chou,周杰伦,music analysis,data visualization,Spotify,数据分析,可视化">
-<meta property="og:title" content="周杰伦音乐分析 · Jay Chou Music Analysis">
-<meta property="og:description" content="Interactive data storytelling of Jay Chou's musical journey across 16 albums and 174 songs.">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="zh_CN">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
-<link rel="preconnect" href="https://cdn.plot.ly">
-<script src="https://cdn.plot.ly/plotly-2.35.0.min.js"></script>
-<script type="module" src="./src/main.js"></script>
-<link rel="stylesheet" href="./src/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>周杰伦音乐深度分析</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>" />
 </head>
 <body>
-<div id="app"></div>
+  <div id="app">
+    <div id="progress-bar"></div>
+
+    <header id="header">
+      <div class="header-inner">
+        <h1 id="app-title">周杰伦音乐深度分析</h1>
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-lang="zh-CN">简体</button>
+          <button class="lang-btn" data-lang="zh-TW">繁體</button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="nav">
+      <button class="nav-tab active" data-section="overview">总览</button>
+      <button class="nav-tab" data-section="evolution">音乐演化</button>
+      <button class="nav-tab" data-section="lyrics">歌词分析</button>
+      <button class="nav-tab" data-section="eda">数据探索</button>
+      <button class="nav-tab" data-section="albums">专辑统计</button>
+      <button class="nav-tab" data-section="recommender">歌曲推荐</button>
+    </nav>
+
+    <main id="main">
+      <section id="section-overview" class="section-scroll" data-section="overview"></section>
+      <section id="section-evolution" class="section-scroll" data-section="evolution"></section>
+      <section id="section-lyrics" class="section-scroll" data-section="lyrics"></section>
+      <section id="section-eda" class="section-scroll" data-section="eda"></section>
+      <section id="section-albums" class="section-scroll" data-section="albums"></section>
+      <section id="section-recommender" class="section-scroll" data-section="recommender"></section>
+    </main>
+
+    <footer id="footer">
+      <p class="footer-text">周杰伦音乐深度分析 · 数据来源: Spotify Web API</p>
+    </footer>
+  </div>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
