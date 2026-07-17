@@ -26,21 +26,31 @@ navTabs.forEach(tab => {
   });
 });
 
-// Intersection Observer
+// IntersectionObserver for fade-in animation only
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const section = entry.target;
-      section.classList.add('visible');
-      const name = section.dataset.section;
-      if (name && name !== currentSection) {
-        currentSection = name;
-        navTabs.forEach(t => t.classList.remove('active'));
-        document.querySelector(`.nav-tab[data-section="${name}"]`)?.classList.add('active');
-      }
+      entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.15, rootMargin: '-108px 0px -30% 0px' });
+}, { threshold: 0.1 });
+
+// Scroll-based nav tracking
+function updateActiveNav() {
+  const offset = 130;
+  let active = 'overview';
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top <= offset) {
+      active = s.dataset.section;
+    }
+  });
+  if (active && active !== currentSection) {
+    currentSection = active;
+    navTabs.forEach(t => t.classList.remove('active'));
+    document.querySelector(`.nav-tab[data-section="${active}"]`)?.classList.add('active');
+  }
+}
+window.addEventListener('scroll', updateActiveNav);
 
 // Scroll progress
 function updateProgress() {
@@ -343,7 +353,7 @@ function renderRecRadar(inputIdx, resultIdx) {
   wrap.innerHTML = '';
 
   if (resultIdx === undefined || resultIdx < 0) {
-    wrap.innerHTML = `<div class="rec-loading">${t('rec.loading')}</div>`;
+    wrap.innerHTML = `<div class="rec-loading">${t('rec.select_prompt')}</div>`;
     return;
   }
 
@@ -449,7 +459,7 @@ function buildRecommender(section) {
   section.appendChild(methods);
 
   const radar = document.createElement('div'); radar.id = 'rec-radar-wrapper';
-  radar.innerHTML = `<h3>📊 ${t('rec.feature_compare')}</h3><div id="rec-radar-chart"><div class="rec-loading">${t('rec.loading')}</div></div>`;
+  radar.innerHTML = `<h3>📊 ${t('rec.feature_compare')}</h3><div id="rec-radar-chart"><div class="rec-loading">${t('rec.select_prompt')}</div></div>`;
   section.appendChild(radar);
 
   // Populate select & setup handler

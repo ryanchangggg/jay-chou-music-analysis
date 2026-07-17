@@ -163,6 +163,7 @@ const translations = {
     'rec.feature_compare': '特征对比',
     'rec.input_song': '输入歌曲',
     'rec.top_recommend': '#1 推荐结果',
+    'rec.select_prompt': '请选择两首音乐以查看雷达图',
     'rec.loading': '加载中...',
 
     'loading': '加载中...',
@@ -182,4 +183,3 @@ let currentLang = 'zh-CN';
 export function t(key) {
   return translations[currentLang]?.[key] ?? translations['zh-CN']?.[key] ?? key;
 }
-
