@@ -2,7 +2,7 @@
 # Jay Chou Music Deep Analysis — Makefile
 # =============================================================================
 
-.PHONY: help install setup lint clean data notebooks
+.PHONY: help install setup lint clean data frontend-data
 
 help:
 	@echo "Usage: make <target>"
@@ -13,7 +13,7 @@ help:
 	@echo "  lint             Run flake8 on src/analysis/"
 	@echo "  clean            Remove __pycache__ and .ipynb_checkpoints"
 	@echo "  data             Run preprocessing pipeline"
-	@echo "  notebooks        Launch Jupyter Lab"
+	@echo "  frontend-data    Copy processed data to frontend public/data/"
 
 install:
 	pip install --upgrade pip
@@ -34,5 +34,6 @@ clean:
 data:
 	python3 -m src.analysis.preprocess
 
-notebooks:
-	jupyter lab notebooks/
+frontend-data:
+	@echo "Frontend data uses symlinks; no copy needed."
+	@ls -la src/frontend/public/data/

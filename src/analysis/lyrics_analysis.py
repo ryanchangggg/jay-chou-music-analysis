@@ -44,18 +44,18 @@ if _CN_FONT:
     plt.rcParams['font.sans-serif'] = [_CN_FONT]
 plt.rcParams['axes.unicode_minus'] = False
 
-# ── Paths ──
-BASE = os.path.dirname(os.path.abspath(__file__))
-WORK = BASE
-DATA = os.path.join(BASE, '..', 'work')
-OUTPUTS = os.path.join(BASE, '..', 'outputs')
-os.makedirs(OUTPUTS, exist_ok=True)
+from src.analysis.config import (
+    RAW_DATA_DIR, OUTPUTS_DIR,
+    MASTER_DATASET_PATH,
+)
+PROJECT_ROOT = OUTPUTS_DIR.parent
+FIGS_DIR = OUTPUTS_DIR / "figures"
+FIGS_DIR.mkdir(parents=True, exist_ok=True)
 
-LYRICS_CSV = os.path.join(WORK, 'lyrics.csv')
-MASTER_CSV = os.path.join(WORK, 'jay_chou_master_dataset.csv')
-STOPWORDS_PATH = os.path.join(WORK, 'stopwords', 'cn_stopwords.txt')
-JAY_DICT_PATH = os.path.join(WORK, 'jay_dict.txt')
-
+LYRICS_CSV = str(RAW_DATA_DIR / 'lyrics.csv')
+MASTER_CSV = str(MASTER_DATASET_PATH)
+STOPWORDS_PATH = str(PROJECT_ROOT / 'data' / 'stopwords' / 'cn_stopwords.txt')
+JAY_DICT_PATH = str(RAW_DATA_DIR / 'jay_dict.txt')
 print("=" * 60)
 print("周杰伦音乐深度分析 — Lyrics Analysis 模块")
 print("=" * 60)
@@ -151,7 +151,7 @@ for bar, val in zip(bars, counts_top30):
     ax.text(bar.get_width() + 5, bar.get_y() + bar.get_height()/2,
             str(val), va='center', fontsize=8)
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '01_top30_words.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "01_top30_words.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 01_top30_words.png")
 
@@ -174,7 +174,7 @@ wc = WordCloud(
     random_state=42
 )
 wc.generate_from_frequencies(dict(word_freq.most_common(100)))
-wc.to_file(os.path.join(OUTPUTS, '02_wordcloud.png'))
+wc.to_file(str(FIGS_DIR / "02_wordcloud.png"))
 print(f"  ✓ 02_wordcloud.png")
 
 # ============================================================
@@ -227,7 +227,7 @@ for bar, val in zip(bars, weights):
     ax.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
             f'{val:.1f}', va='center', fontsize=8)
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '03_tfidf_top30.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "03_tfidf_top30.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 03_tfidf_top30.png")
 
@@ -281,7 +281,7 @@ for t_idx in range(n_topics):
     ax.tick_params(axis='x', labelsize=8)
 plt.suptitle('LDA 主题模型 — 各主题 Top 12 词', fontsize=14, fontweight='bold', y=1.02)
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '04_lda_topics.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "04_lda_topics.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 04_lda_topics.png")
 
@@ -296,7 +296,7 @@ ax.set_title('周杰伦歌词主题随时间演变', fontsize=14, fontweight='bo
 ax.legend([f'Topic {i+1}: {topic_words[i][0]}...' for i in range(n_topics)],
           loc='upper left', bbox_to_anchor=(1, 1), fontsize=9)
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '05_topic_over_time.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "05_topic_over_time.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 05_topic_over_time.png")
 
@@ -315,7 +315,7 @@ legend_labels = [f'Topic {i+1}: {", ".join(topic_words[i][:5])}' for i in range(
 ax.legend(legend_labels, loc='center left', bbox_to_anchor=(1, 0.5), fontsize=8)
 ax.set_title('歌词主题分布', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '06_topic_pie.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "06_topic_pie.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 06_topic_pie.png")
 
@@ -379,7 +379,7 @@ ax.set_title('情绪分类占比')
 
 plt.suptitle('周杰伦歌词 SnowNLP 情绪分析', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '07_sentiment_distribution.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "07_sentiment_distribution.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 07_sentiment_distribution.png")
 
@@ -396,7 +396,7 @@ ax.set_xlabel('年份')
 ax.set_ylabel('平均情绪值')
 ax.set_title('歌词情绪值随时间变化趋势', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '08_sentiment_trend.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "08_sentiment_trend.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 08_sentiment_trend.png")
 
@@ -416,7 +416,7 @@ if 'album_cn' in merged.columns:
         ax.text(val + 0.005, bar.get_y() + bar.get_height()/2,
                 f'{val:.3f}', va='center', fontsize=8)
     plt.tight_layout()
-    plt.savefig(os.path.join(OUTPUTS, '09_sentiment_by_album.png'), dpi=150, bbox_inches='tight')
+    plt.savefig(str(FIGS_DIR / "09_sentiment_by_album.png"), dpi=150, bbox_inches='tight')
     plt.close()
     print(f"  ✓ 09_sentiment_by_album.png")
 
@@ -507,7 +507,7 @@ for ax, (col, title, color, xlabel) in zip(axes.flatten(), metrics):
     ax.legend(fontsize=8)
 plt.suptitle('歌词复杂度指标分布', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '10_complexity_distribution.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "10_complexity_distribution.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 10_complexity_distribution.png")
 
@@ -529,7 +529,7 @@ for ax, (col, title, ylabel) in zip(axes, time_metrics):
     ax.legend(fontsize=8)
 plt.suptitle('歌词复杂度随时间演变趋势', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '11_complexity_trend.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "11_complexity_trend.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 11_complexity_trend.png")
 
@@ -554,7 +554,7 @@ ax.set_ylabel('SnowNLP 情绪值 (歌词情感)')
 ax.set_title(f'歌词情绪 vs 音乐情感 (r={corr:.3f})', fontsize=12)
 ax.legend(fontsize=9)
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '12_sentiment_vs_valence.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "12_sentiment_vs_valence.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 12_sentiment_vs_valence.png")
 
@@ -572,7 +572,7 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
 ax.set_yticklabels(ax.get_yticklabels(), rotation=0)
 ax.set_title('歌词特征相关性矩阵', fontsize=14, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(OUTPUTS, '13_feature_correlation.png'), dpi=150, bbox_inches='tight')
+plt.savefig(str(FIGS_DIR / "13_feature_correlation.png"), dpi=150, bbox_inches='tight')
 plt.close()
 print(f"  ✓ 13_feature_correlation.png")
 
@@ -624,8 +624,8 @@ summary_lines.extend([
     "",
     "--- 输出文件 ---",
 ])
-for f in sorted(os.listdir(OUTPUTS)):
-    fpath = os.path.join(OUTPUTS, f)
+for f in sorted(os.listdir(str(OUTPUTS_DIR))):
+    fpath = os.path.join(str(OUTPUTS_DIR), f)
     if os.path.isfile(fpath):
         size = os.path.getsize(fpath)
         summary_lines.append(f"  {f} ({size/1024:.1f} KB)")
@@ -634,6 +634,6 @@ summary_lines.append("")
 summary_lines.append("=" * 60)
 
 summary_text = '\n'.join(summary_lines)
-with open(os.path.join(OUTPUTS, 'analysis_summary.txt'), 'w', encoding='utf-8') as f:
+with open(str(OUTPUTS_DIR / "analysis_summary.txt"), 'w', encoding='utf-8') as f:
     f.write(summary_text)
 print(summary_text)

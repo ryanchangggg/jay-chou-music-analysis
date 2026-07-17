@@ -67,8 +67,8 @@ make install
 # 3. Run the data pipeline
 make data
 
-# 4. Explore with notebooks
-make notebooks     # Launch Jupyter Lab
+# 4. (Optional) Start the frontend dev server
+cd src/frontend && npm install && npx vite
 ```
 
 ## Project Structure
@@ -79,29 +79,34 @@ jay-chou-music-analysis/
 │   ├── raw/             # Raw CSV files (read-only source data)
 │   ├── processed/       # Preprocessed datasets for analysis & frontend
 │   └── stopwords/       # Chinese stopword lists for NLP
-├── notebooks/           # Jupyter analysis notebooks
 ├── src/
 │   ├── analysis/        # Python analysis package
-│   │   ├── config.py         # Unified paths, column names, parameters
-│   │   ├── preprocess.py     # Data cleaning & merging
-│   │   ├── eda.py            # Exploratory data analysis (plots)
-│   │   ├── cluster_analysis.py   # KMeans, PCA, Isolation Forest
-│   │   ├── lyrics_analysis.py    # NLP: Jieba, TF-IDF, LDA
-│   │   ├── music_evolution.py    # Temporal feature evolution
-│   │   ├── popularity_prediction.py  # Regression models
-│   │   ├── song_recommender.py   # Content-based recommendation
-│   │   └── generate_dashboard.py # Interactive dashboard HTML
-│   └── frontend/        # Interactive data-narrative web app
-│       ├── src/             # Vanilla JS application code
-│       ├── scripts/         # Data export pipeline
-│       ├── dist/            # Production build output
-│       └── vercel.json      # Vercel deployment config
+│   │   ├── config.py         # Unified paths, columns, parameters
+│   │   ├── preprocess.py     # Data cleaning & merging pipeline
+│   │   ├── eda.py            # EDA figures (8 PNG: missing values, boxplots, etc.)
+│   │   ├── cluster_analysis.py   # KMeans, PCA, HDBSCAN, UMAP clustering
+│   │   ├── lyrics_analysis.py    # NLP: Jieba, TF-IDF, LDA, SnowNLP
+│   │   ├── music_evolution.py    # Feature evolution + bilingual report
+│   │   ├── popularity_prediction.py  # RF/XGB/LGBM/CatBoost + SHAP
+│   │   ├── song_recommender.py   # Cosine/KNN/PCA recommender
+│   │   └── generate_dashboard.py # Standalone Plotly dashboard HTML
+│   └── frontend/        # Interactive SPA (Vite + vanilla JS)
+│       ├── index.html         # Entry point
+│       ├── package.json       # Node dependencies (Chart.js, Vite)
+│       ├── vite.config.js     # Vite build configuration
+│       ├── src/               # Vanilla JS application code
+│       │   ├── main.js        # App bootstrap, scroll nav, section builders
+│       │   ├── charts.js      # All Chart.js chart functions (20 charts)
+│       │   ├── data.js        # Data loading + aggregation utilities
+│       │   ├── i18n.js        # zh-CN / zh-TW translations (~150 keys)
+│       │   └── styles.css     # Apple-inspired responsive styles
+│       ├── public/data/       # JSON data for frontend (from data/processed/)
+│       └── dist/              # Production build output
 ├── outputs/             # Generated figures and reports
-│   ├── figures/         # PNG plots and interactive HTML charts
-│   └── music_evolution_report.md
-├── models/              # Serialized ML models
+│   ├── figures/             # 30+ PNG plots + 4 interactive HTMLs
+│   ├── music_evolution_report.md
+│   └── analysis_summary.txt   # Lyrics analysis text summary
 ├── docs/                # Documentation & PRD
-├── assets/              # Static resources
 ├── Makefile             # Automation commands
 └── requirements.txt     # Python dependencies
 ```

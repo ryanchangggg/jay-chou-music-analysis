@@ -37,8 +37,6 @@ data/processed/
 !data/processed/.gitkeep
 
 # Models - serialized artifacts
-models/*
-!models/.gitkeep
 
 # Outputs - generated figures, reports
 outputs/*

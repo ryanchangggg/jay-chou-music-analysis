@@ -24,7 +24,5 @@ The `src/analysis/` package provides the data analysis backend:
 
 ## Frontend Application
 
-The `src/frontend/` directory contains the interactive data-narrative
-website built with Vite and vanilla JavaScript.
-
-See `src/frontend/README.md` for setup and deployment instructions.
+The `src/frontend/` directory contains the interactive SPA built with
+Vite and vanilla JavaScript. See the root `README.md` for setup instructions.
