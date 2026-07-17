@@ -1,0 +1,9 @@
+{
+  "name": "jay-chou-music-analysis",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cd src/frontend && npm install --no-optional && npm run build",
+    "dev": "cd src/frontend && npm run dev"
+  }
+}
