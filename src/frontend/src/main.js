@@ -1,5 +1,6 @@
 // ─── IMPORTS ───
-import { t, setLang } from './i18n.js';
+import { t } from './i18n.js';
+import Chart from 'chart.js/auto';
 import * as Data from './data.js';
 import * as Charts from './charts.js';
 import './styles.css';
@@ -10,15 +11,6 @@ let charts = {};
 let currentSection = 'overview';
 
 // ─── LANGUAGE ───
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    setLang(btn.dataset.lang);
-    fullRender();
-  });
-});
-
 // ─── SCROLL NAVIGATION ───
 const navTabs = document.querySelectorAll('.nav-tab');
 const sections = document.querySelectorAll('.section-scroll');
@@ -48,7 +40,7 @@ const observer = new IntersectionObserver((entries) => {
       }
     }
   });
-}, { threshold: 0.15, rootMargin: '-56px 0px -30% 0px' });
+}, { threshold: 0.15, rootMargin: '-108px 0px -30% 0px' });
 
 // Scroll progress
 function updateProgress() {
@@ -362,44 +354,65 @@ function renderRecRadar(inputIdx, resultIdx) {
   // Normalize tempo
   const norm = (v, f) => f === 'tempo' ? v / 120 : v;
 
-  const data = [{
-    type: 'scatterpolar',
-    r: [...inputVals.map((v, i) => norm(v, FEATURES[i])), inputVals[0]],
-    theta: [...FEATURE_LABELS, FEATURE_LABELS[0]],
-    fill: 'toself',
-    name: s.song_name,
-    line: { color: '#1d1d1f', width: 2 },
-    marker: { color: '#1d1d1f' },
-  }, {
-    type: 'scatterpolar',
-    r: [...resVals.map((v, i) => norm(v, FEATURES[i])), resVals[0]],
-    theta: [...FEATURE_LABELS, FEATURE_LABELS[0]],
-    fill: 'toself',
-    name: r.song_name,
-    line: { color: '#0071e3', width: 2 },
-    marker: { color: '#0071e3' },
-  }];
-
-  const layout = {
-    polar: {
-      bgcolor: 'transparent',
-      radialaxis: { visible: true, range: [0, 1], gridcolor: '#e8e8ed', color: '#6e6e73' },
-      angularaxis: { gridcolor: '#e8e8ed', color: '#888', tickfont: { size: 11 } },
-    },
-    paper_bgcolor: 'transparent',
-    plot_bgcolor: 'transparent',
-    margin: { l: 60, r: 60, t: 10, b: 30 },
-    font: { color: '#6e6e73' },
-    showlegend: true,
-    legend: { font: { size: 11, color: '#6e6e73' }, orientation: 'h', y: -0.1 },
-    height: 400,
-  };
-
-  try {
-    Plotly.newPlot(wrap, data, layout, { responsive: true, displayModeBar: false });
-  } catch(e) {
-    wrap.innerHTML = `<div class="rec-loading">${t('rec.loading')}</div>`;
+  // Destroy previous chart
+  if (radarChart) {
+    radarChart.destroy();
+    radarChart = null;
   }
+
+  const canvas = document.createElement('canvas');
+  wrap.style.width = '100%';
+  wrap.style.height = '400px';
+  wrap.appendChild(canvas);
+
+  radarChart = new Chart(canvas, {
+    type: 'radar',
+    data: {
+      labels: FEATURE_LABELS,
+      datasets: [
+        {
+          label: s.song_name,
+          data: inputVals.map((v, i) => norm(v, FEATURES[i])),
+          borderColor: '#1d1d1f',
+          backgroundColor: 'rgba(29, 29, 31, 0.1)',
+          pointBackgroundColor: '#1d1d1f',
+          pointBorderColor: '#fff',
+          pointHoverRadius: 5,
+          borderWidth: 2,
+        },
+        {
+          label: r.song_name,
+          data: resVals.map((v, i) => norm(v, FEATURES[i])),
+          borderColor: '#0071e3',
+          backgroundColor: 'rgba(0, 113, 227, 0.1)',
+          pointBackgroundColor: '#0071e3',
+          pointBorderColor: '#fff',
+          pointHoverRadius: 5,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { size: 11 }, color: '#6e6e73' },
+        },
+      },
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 1,
+          ticks: { stepSize: 0.2, font: { size: 10 }, color: '#6e6e73' },
+          grid: { color: '#e8e8ed' },
+          pointLabels: { font: { size: 11 }, color: '#888' },
+          angleLines: { color: '#e8e8ed' },
+        },
+      },
+    },
+  });
 }
 
 // ─── SECTION: Recommender Builder ───

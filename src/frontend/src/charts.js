@@ -1,6 +1,6 @@
 // 所有互动式图表生成模块
 import Chart from 'chart.js/auto';
-import { t, getLang } from './i18n.js';
+import { t } from './i18n.js';
 
 const COLORS = {
   blue: 'rgba(52, 152, 219, 0.8)',
