@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "cd src/frontend && npm install --omit=optional && npm run build",
+    "build": "cd src/frontend && npm install && npm run build",
     "dev": "cd src/frontend && npm run dev"
   }
 }
