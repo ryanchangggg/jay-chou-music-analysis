@@ -479,7 +479,7 @@ function buildRecommender(section) {
 // ─── FULL RENDER ───
 function fullRender() {
   clearCharts();
-  document.getElementById('app-title').textContent = t('nav.overview') + ' · 周杰伦音乐深度分析';
+  document.getElementById('app-title').textContent = '周杰伦音乐深度分析';
   document.querySelector('.footer-text').textContent = t('footer');
 
   const sectionIds = ['section-overview','section-evolution','section-lyrics','section-eda','section-albums','section-recommender'];
