@@ -1,1 +1,146 @@
-../../../../data/processed/albums.json
+[
+  {
+    "album_cn":"杰伦",
+    "album_en":"Jay",
+    "song_count":10,
+    "avg_popularity":61.1,
+    "avg_energy":0.602,
+    "avg_valence":0.445,
+    "year":2000
+  },
+  {
+    "album_cn":"范特西",
+    "album_en":"Fantasy",
+    "song_count":10,
+    "avg_popularity":68.6,
+    "avg_energy":0.587,
+    "avg_valence":0.41,
+    "year":2001
+  },
+  {
+    "album_cn":"八度空间",
+    "album_en":"The Eight Dimensions",
+    "song_count":10,
+    "avg_popularity":59.0,
+    "avg_energy":0.594,
+    "avg_valence":0.4,
+    "year":2002
+  },
+  {
+    "album_cn":"叶惠美",
+    "album_en":"Ye Huimei",
+    "song_count":11,
+    "avg_popularity":61.1818181818,
+    "avg_energy":0.6063636364,
+    "avg_valence":0.3909090909,
+    "year":2003
+  },
+  {
+    "album_cn":"七里香",
+    "album_en":"Common Jasmine Orange",
+    "song_count":10,
+    "avg_popularity":63.6,
+    "avg_energy":0.607,
+    "avg_valence":0.42,
+    "year":2004
+  },
+  {
+    "album_cn":"11月的萧邦",
+    "album_en":"November's Chopin",
+    "song_count":12,
+    "avg_popularity":67.0833333333,
+    "avg_energy":0.6025,
+    "avg_valence":0.385,
+    "year":2005
+  },
+  {
+    "album_cn":"依然范特西",
+    "album_en":"Still Fantasy",
+    "song_count":10,
+    "avg_popularity":70.6,
+    "avg_energy":0.582,
+    "avg_valence":0.381,
+    "year":2006
+  },
+  {
+    "album_cn":"我很忙",
+    "album_en":"On the Run",
+    "song_count":10,
+    "avg_popularity":71.0,
+    "avg_energy":0.609,
+    "avg_valence":0.415,
+    "year":2007
+  },
+  {
+    "album_cn":"魔杰座",
+    "album_en":"Capricorn",
+    "song_count":11,
+    "avg_popularity":65.0,
+    "avg_energy":0.5827272727,
+    "avg_valence":0.4545454545,
+    "year":2008
+  },
+  {
+    "album_cn":"跨时代",
+    "album_en":"The Era",
+    "song_count":11,
+    "avg_popularity":59.1818181818,
+    "avg_energy":0.5745454545,
+    "avg_valence":0.3709090909,
+    "year":2010
+  },
+  {
+    "album_cn":"惊叹号",
+    "album_en":"Exclamation Point",
+    "song_count":11,
+    "avg_popularity":51.3636363636,
+    "avg_energy":0.6481818182,
+    "avg_valence":0.4618181818,
+    "year":2011
+  },
+  {
+    "album_cn":"12新作",
+    "album_en":"Opus 12",
+    "song_count":12,
+    "avg_popularity":57.3333333333,
+    "avg_energy":0.5916666667,
+    "avg_valence":0.4208333333,
+    "year":2012
+  },
+  {
+    "album_cn":"哎呦，不错哦",
+    "album_en":"Aiyo, Not Bad",
+    "song_count":12,
+    "avg_popularity":58.25,
+    "avg_energy":0.5983333333,
+    "avg_valence":0.415,
+    "year":2014
+  },
+  {
+    "album_cn":"周杰伦的床边故事",
+    "album_en":"Jay Chou's Bedtime Stories",
+    "song_count":10,
+    "avg_popularity":62.8,
+    "avg_energy":0.633,
+    "avg_valence":0.438,
+    "year":2016
+  },
+  {
+    "album_cn":"最伟大的作品",
+    "album_en":"Greatest Works of Art",
+    "song_count":11,
+    "avg_popularity":70.2727272727,
+    "avg_energy":0.5636363636,
+    "avg_valence":0.3863636364,
+    "year":2022
+  },
+  {
+    "album_cn":"太阳之子",
+    "album_en":"Children of the Sun",
+    "song_count":13,
+    "avg_popularity":70.6923076923,
+    "avg_energy":0.5792307692,
+    "avg_valence":0.4538461538,
+    "year":2026
+  }
+]
